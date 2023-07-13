@@ -1,10 +1,14 @@
+//link to json data
 const url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json';
 
 ///////////////////////////////////////////////////////////////////////
+
+//check data link to url
 const dataPromise = d3.json(url);
 console.log("Data Promise: ", dataPromise);
 ///////////////////////////////////////////////////////////////////////
 
+//check data
 d3.json(url).then(function(data){
     console.log(data);
 });
@@ -27,6 +31,7 @@ function init() {
 
         //set selection as item in dropdown
         let selection = name[0]
+
         console.log(`First selection ${selection}`)
 
         //run functions for the initial view using the first item from the dropdown
@@ -45,6 +50,7 @@ function barChart(selection){
     d3.json(url).then((chartData) => {
         //select samples part of json for dropdown selection
         let samples = chartData.samples;
+        //filter for selected value
         let sampleData = samples.filter(result => result.id === selection);
        
         //using the filtered result
@@ -69,10 +75,12 @@ function barChart(selection){
             x: x_axis,
             y: y_axis,
             text: labels,
+            marker: {color: 'C298E3'},
             type: 'bar',
             orientation: 'h'
         };
 
+        //the data array for plotting
         let axisData = [trace];
 
         //chart layout parameters
@@ -93,6 +101,7 @@ function metadataDisplay(mData){
     d3.json(url).then((metaData) => {
         //select metadata section part of json for dropdown selection
         let info = metaData.metadata;
+        //filter for selected value
         let infoSample = info.filter(resultM => resultM.id == mData);
         console.log('Metadata', info)
 
@@ -143,12 +152,13 @@ function bubbleChart(bData){
     d3.json(url).then((chartBub) => {
         //select samples part of the json for dropdown selection
         let bubbs = chartBub.samples;
+        //filter for selected value
         let bubbleData = bubbs.filter(resultB => resultB.id == bData);
-
-        console.log('Bubble Chart selection: ', bubbleData)
 
         //using the filtered result
         let bubbleSample = bubbleData[0]
+
+        console.log('Bubble Chart selection: ', bubbleSample)
 
         //define the items required
         let bubbleIDS = bubbleSample.otu_ids;
@@ -170,11 +180,14 @@ function bubbleChart(bData){
 
         //layout parameters for addition of xaxis title
         let layout = {
+            title: 'Bacteria Results per Sample',
             xaxis: {
+                hovermode: 'closest',
                 title: {text: 'OTU ID'}
             }
         };
 
+        //create data array for plotting
         let axisBubble = [trace1];
 
         //plot bubble chart
@@ -190,6 +203,7 @@ function gauge(gData){
     d3.json(url).then((chartG) => {
         //select metadata part of json for dropdown selection
         let gauge = chartG.metadata;
+        //filter for selected value
         let gaugeData = gauge.filter(resultG => resultG.id == gData);
 
         console.log('Gauge Chart selection: ', gaugeData)
@@ -226,7 +240,8 @@ function gauge(gData){
                     stroke: {color: 'blue'}}
                 ] */
             }};
-          
+        
+        //create data array for plotting    
         let gaugePlot = [trace3];
 
         //plot gauge chart
